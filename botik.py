@@ -1,5 +1,5 @@
 
-import requests
+import requests 
 
 def get_OHLC(pair):
 
@@ -10,7 +10,7 @@ def get_OHLC(pair):
        'Accept': 'application/json'
     }
 
-    response = requests.request("GET", url, headers=headers, data=payload)
+    response = requests.get( url, headers=headers, data=payload)
 
     print(response.text)
     return response.text
@@ -41,16 +41,30 @@ def jump(Data, jump):
     
     return Data
 # Example of adding 3 empty columns to an array
-my_ohlc_array = adder(my_ohlc_array, 3)
+#my_ohlc_array = adder(my_ohlc_array, 3)
 # Example of deleting the 2 columns after the column indexed at 3
-my_ohlc_array = deleter(my_ohlc_array, 3, 2)
+#my_ohlc_array = deleter(my_ohlc_array, 3, 2)
 # Example of deleting the first 20 rows
-my_ohlc_array = jump(my_ohlc_array, 20)
+#my_ohlc_array = jump(my_ohlc_array, 20)
 # Remember, OHLC is an abbreviation of Open, High, Low, and Close and it refers to the standard historic...       
+def ma(Data, lookback, close, where): 
+    
+    Data = adder(Data, 1)
+    
+    for i in range(len(Data)):
+           
+            try:
+                Data[i, where] = (Data[i - lookback + 1:i + 1, close].mean())
+            
             except IndexError:
                 pass
             
+    # Cleaning
+    Data = jump(Data, lookback)
+    
     return Data
+
+
 def atr(Data, lookback, high, low, close, where, genre = 'Smoothed'):
     
     # Adding the required columns
