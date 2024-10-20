@@ -3,9 +3,9 @@ import plotly.graph_objects as go
 import mplfinance as mpf
 import requests
 
-def get_OHLC(pair, interval):
+def get_OHLC(pair, interval, since):
 
-    url = "https://api.kraken.com/0/public/OHLC?pair=" + pair + "&interval=" + interval
+    url = "https://api.kraken.com/0/public/OHLC?pair=" + pair + "&interval=" + interval + "&since=" + since
 
     payload = {}
     headers = {
@@ -14,13 +14,12 @@ def get_OHLC(pair, interval):
 
     response = requests.get( url, headers=headers, data=payload)
 
-    print(response.json())
     return response.json()
 
 
 # Assuming you have your OHLC data in a pandas DataFrame
 # Example of OHLC data structure
-kraken_data = get_OHLC("BTCUSDT","60")
+kraken_data = get_OHLC("BTCUSDT","60", "1288671200")
 
 ohlc_data = kraken_data["result"]["XBTUSDT"]
 
